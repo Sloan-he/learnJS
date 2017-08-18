@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+// 'use strict'
+	var random = {
+		get octet(){
+			return Math.floor(Math.random()*256)
+		},
+		get uint16(){
+			return Math.floor(Math.random()*65536)
+		},
+		get int16(){
+			return Math.floor(Math.random()*256) - 32768
+		}
+	}
+
+	//获得某个对象特定属性的属性描述符
+	console.log(Object.getOwnPropertyDescriptor({x:1},'x'))
+	console.log(Object.getOwnPropertyDescriptor(random,'octet'))
+
+
+	//设置属性的特性或者让新建属性具有某种特性
+	var o = {}
+	Object.defineProperty(o,'x',{
+		value:1,
+		writable:true,
+		enumerable:false,
+		configurable:true
+	})
+
+	console.log(o.x,Object.getOwnPropertyDescriptor(o,'x'))
+	console.log(Object.keys(o))
+
+	Object.defineProperty(o,'x',{
+		writable:false,
+	})
+	o.x = 10
+	console.log(o.x,Object.getOwnPropertyDescriptor(o,'x'))
+	//虽然不可能修改,仍然可以配置的
+	Object.defineProperty(o,'x',{value:6})
+	console.log(o)
+
+	//批量
+	var p = Object.defineProperties({},{
+		x:{value:1,writable:false},
+		y:{value:1,writable:true},
+		r:{get:function(){return (this.x+this.x) * this.y}}
+	})
+
+	console.log(p)
+
+	var j = {}
+	Object.defineProperty(j,'x',{
+		value:1,
+		writable:false,
+		enumerable:false,
+		configurable:false
+	})
+
+	console.log(j)
+	//报错
+	//Object.defineProperty(j,'x',{value:4})
+
+	Object.defineProperty(Object.prototype,'extend',{
+		writable:true,
+		enumerable:false,
+		configurable:true,
+		value:function(n){
+			var names = Object.getOwnPropertyNames(n)
+			for(var i = 0;i < names.length;i++){
+				if(names[i] in this) {
+					continue
+				}
+				var desc = Object.getOwnPropertyDescriptor(n,names[i])
+				Object.defineProperty(this,names[i],desc)
+			}
+		}
+	})
+
+
+	Object.prototype.extend({a:1,b:3})
+	Object.prototype.extend({c:6})
+	Object.prototype.extend({c:7,d:10})
+	console.log(Object.getOwnPropertyDescriptor(Object.prototype,'a'))
+
+
+</script>

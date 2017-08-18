@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+	var p = {
+		y:1.0,
+		x:1.0,
+		get r(){
+			return Math.sqrt(this.x * this.x + this.y * this.y)
+		},
+		set r(newval){
+			var oldVal = Math.sqrt(this.x * this.x + this.y * this.y)
+			var ratio = newval / oldVal
+			console.log(newval)
+			this.x *= ratio
+			this.y *= ratio
+		},
+		get theta(){
+			return Math.atan2(this.y,this.x)
+		}
+	}
+	p.x = 2.0
+	console.log(p)
+
+
+	var serialnum = {
+		$n:0,
+		get next(){
+			return this.$n++
+		},
+		set next(n){
+			if(n >= this.$n) this.$n = n
+				else throw '不能少于当前值'
+		}
+	}
+
+	var data = {
+		a:0,
+		b:2,
+		c:3,
+		get next(){
+			return ++this.a
+		} 
+	}
+
+	function checkDataProp(props){
+		if(props.a > 5){
+			return false
+			//throw '不能大于5'
+		}else{
+			return true
+		}
+	}
+	function propCount(data,num){
+		if(!(typeof num == 'number')){
+			throw '不是数字'
+		}
+		return data.a+data.b+data.c+num
+	}
+	console.log(data.next,data)
+	console.log(data.next,data)
+
+
+	var random = {
+		get octet(){
+			return Math.floor(Math.random()*256)
+		},
+		get uint16(){
+			return Math.floor(Math.random()*65536)
+		},
+		get int16(){
+			return Math.floor(Math.random()*256) - 32768
+		}
+	}
+
+
+	console.log(random.octet,random.octet)
+
+</script>

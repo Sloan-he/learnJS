@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+	var o = {x:1}
+	Object.prototype.a = 1
+
+	console.log('x' in o)
+	console.log('a' in o)
+	//忽略从原型链上面的属性
+	console.log(o.hasOwnProperty('x'))
+	console.log('hasOwnProperty',o.hasOwnProperty('a'))
+	//存在并且可以枚举的
+	console.log(o.propertyIsEnumerable('x'))
+	console.log(o.a)
+	console.log(o.propertyIsEnumerable('a'))
+	console.log(o.propertyIsEnumerable('toString'))
+</script>

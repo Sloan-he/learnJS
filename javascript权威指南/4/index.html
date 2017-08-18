@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+	var obj = {xy:33,yq:66,'6+6':99}
+
+	console.log(obj['x'+'y'])
+
+	function createObj(name,age,sex){
+		var name = name || 'none'
+		var age = age || 0
+		var sex = sex || 'x'
+		this.name = name
+		this.age = age
+		this.sex = sex
+		return [33,44,123]
+	}
+
+	var newObj = new createObj()
+
+	console.log(newObj)
+
+
+</script>

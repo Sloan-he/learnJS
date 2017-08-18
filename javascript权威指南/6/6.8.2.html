@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+	function classof(o){
+		console.log(Object.prototype.toString.call(o).slice(8,-1))
+		return Object.prototype.toString.call(o).slice(8,-1)
+	}
+	classof({a:5})
+	classof(new Date())
+	classof([])
+	classof(/./)
+
+
+
+</script>
