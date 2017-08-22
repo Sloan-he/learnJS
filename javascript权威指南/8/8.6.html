@@ -2,19 +2,42 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>闭包</title>
 </head>
 <body>
 	
 </body>
 </html>
 <script>
-//'use strict'
-var scope = 'global scope'
-function checkscope(){
-    var scope = 'local scope'
-    function f(){return scope}
-    return f
+'use strict'
+var uniqueInteger = (function(){
+   var counter = 0
+    return function(){
+        return counter++
+    }
+}())
+
+console.log(uniqueInteger())
+console.log(uniqueInteger())
+
+console.log('---------------------------------')
+
+function counter(){
+    var counter = 0
+    return {
+        count:function(){ return counter++},
+        reset:function(){return counter = 0}
+    }
 }
-console.log(checkscope()())
+
+var a = counter()
+var b = counter()
+
+
+console.log(a.count())
+console.log(a.count())
+console.log(b.count())
+console.log(a.reset())
+console.log(a.count())
+console.log(b.count())
 </script>
