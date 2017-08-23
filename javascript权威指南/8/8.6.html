@@ -30,8 +30,10 @@ function counter(){
     }
 }
 
+counter.counter = 100
 var a = counter()
 var b = counter()
+
 
 
 console.log(a.count())
@@ -40,4 +42,70 @@ console.log(b.count())
 console.log(a.reset())
 console.log(a.count())
 console.log(b.count())
+
+
+function counter2(n){
+    return {
+        get count(){return n+= 1},
+        set count(m){
+            if(m >= n){
+                n = m
+            }else{
+               throw Error
+            }
+        }
+    }
+}
+
+var c = counter2(1000)
+
+console.log(c.count)
+console.log(c.count)
+console.log(c.count = 2000)
+console.log(c.count)
+//(function() {
+//
+//    console.log(typeof foo); // function pointer
+//    console.log(typeof bar); // undefined
+//
+//    var foo = 'hello',
+//            bar = function() {
+//                return 'world';
+//            };
+//
+//    function foo() {
+//        return 'hello'
+//    }
+//}())
+
+
+function addPrivateProperty(o,name,predicate){
+    var value;
+    o['get' + name] = function(){return value}
+    o['set' + name] = function(v){
+        if(predicate && !predicate(v)){
+            throw Error('set' + name + ':invaild value ' + v)
+        }else{
+            value = v
+        }
+    }
+}
+
+var o = {}
+
+addPrivateProperty(o,'Name',function(x){
+    return typeof x == 'string'
+})
+o.setName('7')
+console.log(o.getName())
+
+var x = {}
+addPrivateProperty(x,'Name',function(x){
+    return typeof x == 'number'
+})
+
+x.setName(323)
+console.log(x.getName())
+
+
 </script>
