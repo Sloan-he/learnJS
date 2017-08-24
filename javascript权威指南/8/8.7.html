@@ -61,4 +61,38 @@
 
     o.m()
 
+
+    //8.7.4
+    function f(y){
+        return this.x + y
+    }
+
+    var o = {x:1}
+
+    var g = f.bind(o)
+    console.log(g(2))
+
+    var sum = function(x,y){return x+y}
+    var succ = sum.bind(null,2)
+    console.log(succ(2))
+
+    function fx(y,z){return this.x+y+z}
+    var gx = fx.bind({x:1},2)
+    console.log(gx(3))
+
+    //es3的bind方法
+
+    if(!Function.prototype.bind){
+        Function.prototype.bind = function(o){
+            var self = this,boundArgs = arguments
+            return function(){
+                var args = [],i
+                for(i = 1;i < boundArgs.length;i++) args.push(boundArgs[i])
+                for(i = 0;i < boundArgs.length;i++) args.push(arguments[i])
+                return self.apply(o,args)
+            }
+        }
+    }
+
+
 </script>
