@@ -10,15 +10,17 @@
 </html>
 <script>
 'use strict'
-var uniqueInteger = (function(){
+var uniqueInteger = function(num){
    var counter = 0
     return function(){
-        return counter++
+        return counter += counter+num
     }
-}())
-
-console.log(uniqueInteger())
-console.log(uniqueInteger())
+}
+var n1 = uniqueInteger(10)
+var n2 = uniqueInteger(7)
+console.log(n1(),n2())
+console.log(n1(),n1())
+console.log(n2())
 
 console.log('---------------------------------')
 
