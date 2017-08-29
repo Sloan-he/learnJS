@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+	function extend(o,p){
+		for(var x in p){
+			o[x] = p[x]
+		}
+		return o
+	}
+
+	function merge(o,p){
+		for(var x in p){
+			if(!o.hasOwnProperty(x)){
+				o[x] = p[x]
+			}
+		}
+		return o
+	}
+
+	function restrict(o,p){
+		for(var x in o){
+			if(!p.hasOwnProperty(x)){
+				delete o[x]
+			}
+		}
+		return o
+	}
+
+	function subtract(o,p){
+		for(var x in p){
+			delete o[x]
+		}
+		return o
+	}
+
+
+	function union(o,p){
+		return extend(extend({},o),p)
+	}
+
+	function intersection(o,p){
+		return restrict(extend({},o),p)
+	}
+
+	function keys(o){
+		var arr = []
+		for(var x in o){
+			if(o.hasOwnProperty(x)){
+				arr.push(x)
+			}
+		}
+		return arr
+	}
+
+
+	extend({a:3,b:4},{c:5,d:6,a:44})
+	merge({a:1,b:2,c:3},{c:5,d:6,e:7,b:9})
+	restrict({a:3,b:4,c:1,d:9},{c:7,e:4})
+	subtract({a:1,b:9,d:7,g:22,l:44},{g:9,l:0,b:9})
+	console.log(union({a:3,b:4},{c:5,d:6,a:44}))
+	console.log(keys({a:1,b:2,c:3,d:7,g:8}))
+
+	Object.prototype.z = 100	
+	console.log(Object.keys({a:1,b:2,c:3,d:7,g:8}))
+	console.log(Object.getOwnPropertyNames({a:1,b:2,c:3,d:7,g:8}))
+</script>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+	Object.prototype.a = 0
+	Object.prototype.b = 4
+	//传入原型
+	var o1 = Object.create({x:1,y:2})
+	console.log(o1)
+
+	//不继承任何属性和方法
+	var o2 = Object.create(null)
+	console.log(o2)
+
+	//等同于{}和new Object创建对象一样
+	var o2 = Object.create(Object.prototype)
+	console.log(o2)
+</script>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+	'use strict'
+	function f2(a,b,c,d){
+        console.log(arguments)
+	}
+	f2(1,2,3,4)
+</script>
+<script>
+    function f3(a,b,c,d){
+        console.log(arguments)
+        console.log(arguments.callee)
+        console.log(arguments.caller)
+    }
+    f3(1,2,3,4)
+</script>

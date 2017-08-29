@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+    //自定义函数属性
+    intRandom.count = []
+    var count = 0
+    var resultArr = []
+	function intRandom(){
+        count += 1
+        let result  = Math.round(Math.random() * 100)
+        let flag = intRandom.count.some(v => v == result)
+        console.log(flag,result)
+        if(flag){
+            return intRandom()
+        }else{
+            intRandom.count.push(result)
+            return result
+        }
+    }
+
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+    resultArr.push(intRandom())
+</script>
+<script>
+    console.log(intRandom.count)
+    console.log(count)
+    console.log(resultArr)
+</script>

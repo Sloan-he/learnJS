@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+</body>
+</html>
+<script>
+	var p = {x:1}
+	var o = Object.create(p)
+	console.log(o)
+	console.log(p.isPrototypeOf(o))
+	console.log(Object.prototype.isPrototypeOf(o))
+</script>
