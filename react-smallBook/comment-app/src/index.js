@@ -28,10 +28,6 @@ class LikeButton extends Component {
 }
 
 
-
-
-
-
 class Index extends Component {
   render() {
     return (
