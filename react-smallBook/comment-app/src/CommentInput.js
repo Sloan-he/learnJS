@@ -25,7 +25,8 @@ export default class CommentInput extends Component {
   handleSubmit () {
     if (this.props.onSubmit) {
       const { username, content } = this.state
-      this.props.onSubmit({username, content})
+      let createdTime = new Date()
+      this.props.onSubmit({username, content,createdTime})
     }
     this.setState({ content: '' })
   }
@@ -63,9 +64,7 @@ export default class CommentInput extends Component {
           </div>
         </div>
         <div className='comment-field-button'>
-          <button onClick={this.handleSubmit.bind(this)}>
-            发布
-          </button>
+          <button onClick={this.handleSubmit.bind(this)}>发布</button>
         </div>
       </div>
     )

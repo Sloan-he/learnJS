@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types'
 //import Clock from './Clock';
 import './index.css';
 
@@ -55,26 +56,90 @@ import './index.css';
 //}
 
 
-class Card extends Component {
+//class Card extends Component {
+//  render () {
+//    return (
+//      <div className='card'>
+//        <div className='card-content'>
+//          {this.props.children}
+//        </div>
+//      </div>
+//    )
+//  }
+//}
+
+
+
+class Index extends Component {
+  static childContextTypes = {
+    themeColor:PropTypes.string
+  }
+  constructor(){
+    super()
+    this.state = {
+      themeColor:'red'
+    }
+  }
+  getChildContext(){
+    return {themeColor:this.state.themeColor}
+  }
   render () {
     return (
-      <div className='card'>
-        <div className='card-content'>
-          {this.props.children}
-        </div>
+      <div>
+        <Header />
+        <Main />
       </div>
     )
   }
 }
 
+class Header extends Component {
+  render () {
+    return (
+      <div>
+        <h2>This is header</h2>
+        <Title />
+      </div>
+    )
+  }
+}
 
+class Main extends Component {
+  render () {
+    return (
+      <div>
+        <h2>This is main</h2>
+        <Content />
+      </div>
+    )
+  }
+}
+
+class Title extends Component {
+  static contextTypes = {
+    themeColor:PropTypes.string
+  }
+  constructor(props,context){
+    super(props)
+  }
+  render () {
+    return (
+      <h1 style={{ color: this.context.themeColor }}>React.js 小书标题</h1>
+    )
+  }
+}
+
+class Content extends Component {
+  render () {
+    return (
+      <div>
+        <h2>React.js 小书内容</h2>
+      </div>
+    )
+  }
+}
 
 ReactDOM.render(
-  <Card>
-    <div className='name'>My Name：Lucy</div>
-    <p className='age'>
-      My Age：<span>12</span>
-    </p>
-  </Card>,
+  <Index />,
   document.getElementById('root')
-);
+)
