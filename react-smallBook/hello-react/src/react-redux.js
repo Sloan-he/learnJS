@@ -1,7 +1,8 @@
 /**
  * Created by Admin on 2017/9/10.
  */
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 export const connect = (mapStateToProps) => (WrappedComponent) => {
     class Connect extends Component {
