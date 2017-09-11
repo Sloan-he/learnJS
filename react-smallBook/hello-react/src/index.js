@@ -1,128 +1,98 @@
 import React,{Component} from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types'
 import './index.css';
-import Header from './Header'
+import { createStore } from 'redux'
+import { Provider ,connect } from 'react-redux'
 
-function createStore (reducer) {
-  let state = null
-  const listeners = []
-  const subscribe = (listener) => listeners.push(listener)
-  const getState = () => state
-  const dispatch = (action) => {
-    state = reducer(state, action)
-    listeners.forEach((listener) => listener())
+
+
+
+const userReducer = (state = [],action) =>{
+  if(action.type === 'ADD_USER'){
+    return [...state,action.user]
   }
-  dispatch({}) // 初始化 state
-  return { getState, dispatch, subscribe }
+  if(action.type === 'DELETE_USER'){
+    return [...state.slice(0,action.index),...state.slice(action.index+1)]
+  }
+  if(action.type === 'UPDATE_USER'){
+    return [
+      ...state.slice(0,action.index),
+      {...state[action.index],...action.user},
+      ...state.slice(action.index+1)
+    ]
+  }
+  return state
 }
-
-const themeReducer = (state, action) => {
-  if (!state) return {
-    themeColor: 'red'
-  }
-  switch (action.type) {
-    case 'CHANGE_COLOR':
-      return { ...state, themeColor: action.themeColor }
-    default:
-      return state
-  }
-}
-
-const store = createStore(themeReducer)
+const store = createStore(userReducer)
 
 
 
-
-
-class ThemeSwitch extends Component {
-  static contextTypes = {
-    store: PropTypes.object
-  }
-  constructor () {
-    super()
-    this.state = { themeColor: '' }
-  }
-  componentWillMount () {
-    this._updateThemeColor()
-    const {store} = this.context
-    store.subscribe(() => this._updateThemeColor())
-  }
-
-  _updateThemeColor () {
-    const { store } = this.context
-    const state = store.getState()
-    this.setState({ themeColor: state.themeColor })
-  }
-  handleSwitchColor(color){
-    const {store} = this.context
-    store.dispatch({
-      type: 'CHANGE_COLOR',
-      themeColor: color
-    })
-  }
+class User extends Component {
   render () {
+    const { user } = this.props
     return (
-        <div>
-          <button style={{ color: this.state.themeColor }} onClick={this.handleSwitchColor.bind(this,'red')}>Red</button>
-          <button style={{ color: this.state.themeColor }} onClick={this.handleSwitchColor.bind(this,'blue')}>Blue</button>
-        </div>
+      <div>
+        <div>Name: {user.username}</div>
+        <div>Age: {user.age}</div>
+        <div>Gender: {user.gender}</div>
+        <button>删除</button>
+      </div>
     )
   }
 }
 
-class Content extends Component {
-  static contextTypes = {
-    store: PropTypes.object
-  }
-  constructor () {
-    super()
-    this.state = { themeColor: '' }
-  }
-  componentWillMount () {
-    this._updateThemeColor()
-    const {store} = this.context
-    store.subscribe(() => this._updateThemeColor())
-  }
-
-  _updateThemeColor () {
-    const { store } = this.context
-    const state = store.getState()
-    this.setState({ themeColor: state.themeColor })
-  }
+class UsersList extends Component {
   render () {
     return (
-        <div>
-          <p style={{ color: this.state.themeColor }}>React.js 小书内容</p>
-          <ThemeSwitch />
+      <div>
+        {/* 输入用户信息，点击“新增”按钮可以增加用户 */}
+        <div className='add-user'>
+          <div>Username: <input type='text' /></div>
+          <div>Age: <input type='number' /></div>
+          <div>Gender:
+            <label>Male: <input type='radio' name='gender' value='male' /></label>
+            <label>Female: <input type='radio' name='gender' value='female' /></label>
+          </div>
+          <button>增加</button>
         </div>
+        {/* 显示用户列表 */}
+        <div className='users-list'>
+          {
+            this.props.user.map(view =>
+              <User user={view} key={view.index} />
+            )
+          }
+        </div>
+      </div>
     )
   }
 }
 
 
-class Index extends Component {
-  static childContextTypes = {
-    store:PropTypes.object
+const mapStateToProps = (state) =>{
+  return {
+    user:state
   }
-  getChildContext(){
-    return {store}
-  }
-  render () {
-    return (
-        <div>
-          <Header />
-          <Content />
-        </div>
-    )
+}
+const mapDispatchToProps = (dispatch) =>{
+  return {
+    add:() =>{
+      console.log('add')
+    },
+    del:() =>{
+      console.log('del')
+    },
+    update:() =>{
+      console.log('update')
+    }
   }
 }
 
-
-
-
+UsersList = connect(mapStateToProps,mapDispatchToProps)(UsersList)
 
 ReactDOM.render(
-  <Index />,
+  <Provider store={store}>
+    <UsersList />
+  </Provider>,
   document.getElementById('root')
 )
