@@ -1,0 +1,169 @@
+@color: #4D926F;
+@the-border: 1px;
+
+.overflowHidden{
+  overflow: hidden;
+}
+
+
+
+#header {
+  color: @color;
+  .rounded-corners;
+  .overflowHidden;
+  h1{
+    font-size: 26px;
+    font-weight: bold;
+  }
+  p{
+    font-size: 12px;
+    a{
+      text-decoration: none;
+      &:hover{
+        border-bottom: 1px solid #ddd;
+      }
+    }
+  }
+}
+
+
+h2 {
+  color: @color;
+}
+
+h3{
+  color: @color;
+}
+
+.rounded-corners(@radius:5px){
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+
+
+#footer{
+  .rounded-corners(10px);
+  width: 120px;
+  height: 20px;
+  &:hover{
+    border-left-width: @the-border + 5;
+    border-left-color: @color;
+    border-left-style: solid;
+  }
+}
+
+.mixin(dark,@color){
+  color:darken(@color,10%);
+}
+.mixin (light, @color) {
+  color: lighten(@color, 10%);
+}
+.mixin (@_, @color) {
+  display: block;
+}
+
+@switch: light;
+@dark:dark;
+
+.main {
+  .mixin(@switch, #888);
+}
+.main2 {
+  .mixin(@dark, #888);
+}
+.main3 {
+  .mixin(@color, #888);
+}
+
+
+.whenf (@a) when(lightness(@a) >= 50%){
+  background-color: black;
+}
+
+.whenf (@a) when (lightness(@a) < 50%){
+  background-color: grey;
+}
+
+
+.whenf(@a) {
+  color: @a;
+}
+
+.whent1 {.whenf(#ddd)}
+.whent2 {.whenf(#555)}
+
+
+.whenAnd (@num) when(@num > 20),(@num < 70){
+  background: red;
+}
+.whenAnd (@num) when(@num > 80){
+  background:fuchsia;
+}
+
+.whenAnd(@a:0){
+  color:#fff;
+}
+
+.whent3{.whenAnd(99)}
+
+
+.main4{
+  background: #000;
+  &.float{
+    float: left;
+  }
+}
+
+
+#bundle {
+  .button () {
+    display: block;
+    border: 1px solid black;
+    background-color: grey;
+    &:hover { background-color: white }
+  }
+}
+
+#bundle2{
+  .button(){
+    display: inline-block;
+    background: #000;
+    &:hover{
+      background-color: white;
+    }
+  }
+}
+
+
+.main5{
+  color: orange;
+  #bundle > .button
+}
+.main6{
+  color: white;
+  #bundle2 > .button
+}
+
+.main7{
+  @color:green;
+  p{
+    color: @color;
+  }
+}
+
+@import "lib";
+
+.main8{
+  width: @width;
+}
+
+@base-url:'http://css.caibab.com/cgpt/images/';
+
+.main9{
+  background: url("@{base-url}/logo.png") no-repeat;
+  width: 300px;
+  height: 200px;
+}
+
+@hello:`"hello".toUpperCase()+"!"`;

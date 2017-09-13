@@ -1,159 +1,71 @@
-@color: #4D926F;
-@the-border: 1px;
-
-.overflowHidden{
-  overflow: hidden;
-}
+@nice-blue:#5B83AD;
+@light-blue:@nice-blue + #111;
+@base-url:'http://css.caibab.com/cgpt/images/';
 
 
-
-#header {
-  color: @color;
-  .rounded-corners;
-  .overflowHidden;
-  h1{
-    font-size: 26px;
-    font-weight: bold;
-  }
-  p{
+#header{
+  color:@light-blue;
+  .navigation {
     font-size: 12px;
-    a{
-      text-decoration: none;
-      &:hover{
-        border-bottom: 1px solid #ddd;
-      }
-    }
+  }
+  .logo{
+    width: 300px;
+    height: 200px;
+    background: url("@{base-url}/logo.png") no-repeat;
   }
 }
 
-
-h2 {
-  color: @color;
+.bordered{
+  border-bottom: dotted 1px black;
+  border-top: dotted 1px black;
 }
 
-h3{
-  color: @color;
-}
-
-.rounded-corners(@radius:5px){
-  border-radius: @radius;
-  -webkit-border-radius: @radius;
-  -moz-border-radius: @radius;
+#menu a{
+  color: #111;
+  .bordered;
 }
 
 
-#footer{
-  .rounded-corners(10px);
-  width: 120px;
-  height: 20px;
-  &:hover{
-    border-left-width: @the-border + 5;
-    border-left-color: @color;
-    border-left-style: solid;
-  }
-}
-
-.mixin(dark,@color){
-  color:darken(@color,10%);
-}
-.mixin (light, @color) {
-  color: lighten(@color, 10%);
-}
-.mixin (@_, @color) {
-  display: block;
-}
-
-@switch: light;
-@dark:dark;
-
-.main {
-  .mixin(@switch, #888);
-}
-.main2 {
-  .mixin(@dark, #888);
-}
-.main3 {
-  .mixin(@color, #888);
-}
-
-
-.whenf (@a) when(lightness(@a) >= 50%){
-  background-color: black;
-}
-
-.whenf (@a) when (lightness(@a) < 50%){
-  background-color: grey;
-}
-
-
-.whenf(@a) {
-  color: @a;
-}
-
-.whent1 {.whenf(#ddd)}
-.whent2 {.whenf(#555)}
-
-
-.whenAnd (@num) when(@num > 20),(@num < 70){
-  background: red;
-}
-.whenAnd (@num) when(@num > 80){
-  background:fuchsia;
-}
-
-.whenAnd(@a:0){
-  color:#fff;
-}
-
-.whent3{.whenAnd(99)}
-
-
-.main4{
-  background: #000;
-  &.float{
-    float: left;
-  }
-}
-
-
-#bundle {
-  .button () {
+#bundle{
+  .button {
     display: block;
     border: 1px solid black;
     background-color: grey;
-    &:hover { background-color: white }
-  }
-}
-
-#bundle2{
-  .button(){
-    display: inline-block;
-    background: #000;
-    &:hover{
-      background-color: white;
+    &:hover {
+      background-color: white
     }
   }
 }
 
-
-.main5{
+#header a {
   color: orange;
-  #bundle > .button
-}
-.main6{
-  color: white;
-  #bundle2 > .button
+  #bundle > .button;
 }
 
-.main7{
-  @color:green;
-  p{
-    color: @color;
+nav ul{
+  &:extend(.inline);
+  background: blue;
+}
+
+.inline{
+  color:red;
+}
+
+.content:extend(.inline){
+  background: green;
+}
+
+
+.bucket {
+  background: red;
+  p { // nested ruleset with target selector
+    color: blue;
   }
 }
+.some-class:extend(.bucket,.bucket p) {} // nested ruleset is recognized
 
-@import "lib";
 
-.main8{
-  width: @width;
+.link:hover:visited{
+  color: blue;
 }
+.selector:extend(.link) {}
