@@ -69,3 +69,40 @@ nav ul{
   color: blue;
 }
 .selector:extend(.link) {}
+
+//超载鸡样式
+
+
+*{
+  padding:0;
+  margin: 0;
+}
+.wrap{
+  width: 1200px;
+  margin: 0 auto;
+}
+
+@block-size-w:10px;
+@block-size-h:10px;
+@pull-left:left;
+.clearfix:after{content: "";display: table;clear: both;}
+.clearfix:before{content: "";display: table;}
+.row:after:extend(.clearfix:after){};
+.row:before:extend(.clearfix:before){};
+.size(@width:@block-size-w,@height:@block-size-h){
+  width: @width;
+  height: @height;
+  float: @pull-left;
+}
+.red{
+  background: #ed1c24;
+}
+
+.block{
+  .size;
+}
+.block-2{
+  .size(@block-size-w*2,@block-size-h*2);
+}
+
+
