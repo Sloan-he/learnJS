@@ -22,6 +22,8 @@
 
 var arr = [1,2,3,4,5,6,7];
 var fs =  require("fs");
+var http = require('http')
+var domain = require('domain')
 //var async = function(num,cb){
 //  cb(num)
 //};
@@ -83,14 +85,45 @@ function sync(fn, callback) {
 //  return '333'
 //}
 
-try {
-  sync(null,function(err,data){
-    if(err){
-      console.log(err,1)
-      return
-    }
-    console.log('data',data)
-  });
-} catch (err) {
-  console.log('Error: %s', err.message);
+//try {
+//  sync(null,function(err,data){
+//    if(err){
+//      console.log(err,1)
+//      return
+//    }
+//    console.log('data',data)
+//  });
+//} catch (err) {
+//  console.log('Error: %s', err.message);
+//}
+
+
+function async(request, callback) {
+  // Do something.
+  setTimeout(function(){
+    console.log(1)
+    setTimeout(function(){
+      console.log(2)
+      setTimeout(function(){
+        console.log(3)
+        callback('Hello World!')
+      },2000)
+    },1500)
+  },1000)
 }
+
+http.createServer(function (request, response) {
+  var d = domain.create();
+  d.on('error', function () {
+    console.log('error')
+    response.writeHead(500);
+    response.end();
+  });
+  d.run(function () {
+    async(request, function (data) {
+      console.log('success')
+      response.writeHead(200);
+      response.end(data);
+    });
+  });
+}).listen(80);
