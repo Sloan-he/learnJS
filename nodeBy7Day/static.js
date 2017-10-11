@@ -16,6 +16,7 @@ function combineFiles(pathnames, callback) {
         if (err) {
           callback(err);
         } else {
+          console.log(data)
           output.push(data);
           next(i + 1, len);
         }
@@ -32,7 +33,6 @@ function main(argv) {
     port = config.port || 80;
   http.createServer(function (request, response) {
     var urlInfo = parseURL(root, request.url);
-
     combineFiles(urlInfo.pathnames, function (err, data) {
       if (err) {
         response.writeHead(404);
@@ -41,6 +41,7 @@ function main(argv) {
         response.writeHead(200, {
           'Content-Type': urlInfo.mime
         });
+        console.log('cb data',data)
         response.end(data);
       }
     });
@@ -52,7 +53,9 @@ function parseURL(root, url) {
 
   if (url.indexOf('??') === -1) {
     url = url.replace('/', '/??');
+    console.log('url is',url);
   }
+
 
   parts = url.split('??');
   base = parts[0];
