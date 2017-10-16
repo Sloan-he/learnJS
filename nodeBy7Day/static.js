@@ -29,6 +29,7 @@ function main(argv) {
   }).listen(port)
 
   process.on('SIGTERM', function () {
+    console.log(33333)
     server.close(function () {
       process.exit(0);
     });
