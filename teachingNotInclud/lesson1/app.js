@@ -17,45 +17,39 @@ var api = {
             var i = 0
             var arr = []
             for(;i<qs.len;i++){
-                arr[i] = i
+                arr[i] = {id:i,name:'分类'+i}
             }
             cb(arr)
         },delay)
     },
-    listSupp:function(qs,cb){
-        var len = qs.length
-        var count = 0
-        var result = []
-        for(var i = 0;i<len;i++){
-            (function(i){
-                var delay = parseInt((Math.random() * 10000000) % 2000,10)
-                setTimeout(function(){
-                    result[i] = [i+'0',i+'1',i+'2',i+'3']
-                    if(++count === len){
-                        cb([i+'0',i+'1',i+'2',i+'3'])
-                    }
-                },delay)
-            }(i))
-        }
-    },
-    listSuppSync:function(qs,cb){
-        var len = qs.length,result = [];
-        (function action(i){
-            var delay = parseInt((Math.random() * 10000000) % 2000,10)
-            setTimeout(function(){
-                if(i === len){
-                    cb(result)
-                }else{
-                    result[i] = [i+'0',i+'1',i+'2',i+'3']
-                    action(i+1)
-                }
-            },delay)
-        }(0))
-    },
-    suppPro:function(qs,cb){
+    supp:function(params,cb){
         var delay = parseInt((Math.random() * 10000000) % 2000,10)
         setTimeout(function(){
-            cb(['pro1','pro2'])
+            var random = Math.floor(Math.random()*5)
+            var i = 0;
+            var arr = []
+            for(;i< random;i++){
+                arr[i] = {id:'supp'+params.id+i,suppName:'名称'+params.id+i,matId:params.id}
+            }
+            cb(arr)
+        },delay)
+    },
+    suppPro:function(params,cb){
+        var delay = parseInt((Math.random() * 10000000) % 2000,10)
+        setTimeout(function(){
+            var random = Math.floor(Math.random()*3)
+            var i = 0;
+            var arr = []
+            for(;i< random;i++){
+                arr[i] = {
+                    id:'pro'+params.matId+i,
+                    proName:'产品'+params.matId+i,
+                    suppId:params.id,
+                    suppName:params.suppName,
+                    matId:params.matId
+                }
+            }
+            cb(arr)
         },delay)
     }
 }
@@ -63,11 +57,86 @@ var api = {
 
 app.get('/list',function(req,res){
     api.list(req.query,function(list){
-        api.listSupp(list,function(supplist){
-
+        suppParallel(list,function(supplist){
+            proParallel(supplist,function(prolist){
+                res.send(prolist)
+            })
         })
     })
 })
+
+
+function suppParallel(list,cb){
+    var supplist = []
+    var count = 0
+    var len = list.length
+    var time = new Date().getTime()
+    for(var i = 0;i<len;i++){
+        (function(i){
+            api.supp(list[i],function(supp){
+                supplist[i] = supp
+                if(++count === len){
+                    cb(supplist)
+                }
+            })
+        }(i))
+    }
+}
+
+
+function proParallel(list,cb){
+    var prolist = []
+    var count = 0
+    var len = list.length
+    for(var i = 0;i<len;i++){
+        (function(i){
+            if(list[i].length != 0){
+                var lens = list[i].length
+                var counts = 0
+                for(var j = 0;j<list[i].length;j++){
+                    (function(j){
+                        api.suppPro(list[i][j],function(supp){
+                            prolist[i] ? prolist[i] = prolist[i].concat(supp) : prolist[i] = supp
+                            console.log('prolist['+i+']',prolist[i],'supp is',supp)
+                            if(++counts === lens){
+                                if(++count === len){
+                                    cb(prolist)
+                                }
+                            }
+                        })
+                    }(j))
+                }
+            }else{
+                prolist[i] = []
+                if(++count === len){
+                    cb(prolist)
+                }
+            }
+        }(i))
+    }
+}
+
+
+
+
+function suppSerial(list,cb){
+    var len = list.length;
+    var supplist = [];
+    var time = new Date().getTime();
+    (function next(i){
+        api.supp(list[i],function(supp){
+            supplist[i] = supp
+            if(i === len-1){
+                console.log('串行时间:',new Date().getTime() - time)
+                cb(supplist)
+            }else{
+                next(i+1)
+            }
+        })
+    }(0))
+}
+
+
 
 app.listen(80,function(){
     //console.log('app is listening at port 3000');
