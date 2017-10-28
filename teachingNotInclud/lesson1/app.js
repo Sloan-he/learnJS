@@ -59,7 +59,7 @@ app.get('/list',function(req,res){
     api.list(req.query,function(list){
         suppParallel(list,function(supplist){
             proParallel(supplist,function(prolist){
-                res.send(prolist)
+                res.send({matList:list,proList:prolist})
             })
         })
     })

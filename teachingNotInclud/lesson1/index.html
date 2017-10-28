@@ -5,7 +5,10 @@
     <title>Title</title>
     <script src="/axios.min.js"></script>
 </head>
+<style>
+</style>
 <body>
+<div id="body"></div>
 <button id="click">click</button>
 </body>
 </html>
@@ -13,7 +16,20 @@
     var button = document.getElementById('click')
     button.onclick = function(){
         axios.get('/list',{params:{len:4}}).then(function(data){
-            console.log(data)
+            var dom = ''
+            var res = data.data
+            console.log(res)
+            res.matList.map(function(view,i){
+                dom += `
+                <h3>${view.name}</h3>
+                <div>${
+                    res.proList[i].map(function(v,x){
+                        return `<p>产品名字:${v.proName}</p><p>供应商名称:${v.suppName}</p>`
+                    })
+                }</div>
+                `
+            })
+            document.getElementById('body').innerHTML = dom
         })
     }
 </script>
