@@ -74,9 +74,14 @@ function suppParallel(list,cb){
     for(var i = 0;i<len;i++){
         (function(i){
             api.supp(list[i],function(supp){
-                supplist[i] = supp
-                if(++count === len){
-                    cb(supplist)
+                if(supp.length > 0){
+                    var lens = supp.length
+                    var counts = 0;
+                }else{
+                    supplist[i] = []
+                    if(++count === len){
+                        cb(supplist)
+                    }
                 }
             })
         }(i))
