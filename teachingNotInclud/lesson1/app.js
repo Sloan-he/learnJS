@@ -58,9 +58,7 @@ var api = {
 app.get('/list',function(req,res){
     api.list(req.query,function(list){
         suppParallel(list,function(supplist){
-            proParallel(supplist,function(prolist){
-                res.send({matList:list,proList:prolist})
-            })
+            res.send(supplist)
         })
     })
 })
@@ -70,13 +68,25 @@ function suppParallel(list,cb){
     var supplist = []
     var count = 0
     var len = list.length
-    var time = new Date().getTime()
     for(var i = 0;i<len;i++){
         (function(i){
             api.supp(list[i],function(supp){
                 if(supp.length > 0){
-                    var lens = supp.length
-                    var counts = 0;
+                    var lens = supp.length;
+                    var temp = [];
+                    (function next(x){
+                        api.suppPro(supp[x],function(pro){
+                            temp = temp.concat(pro)
+                            if(x === lens-1){
+                                supplist[i] = temp
+                                if(++count === len){
+                                    cb(supplist)
+                                }
+                            }else{
+                                next(x+1)
+                            }
+                        })
+                    }(0))
                 }else{
                     supplist[i] = []
                     if(++count === len){
