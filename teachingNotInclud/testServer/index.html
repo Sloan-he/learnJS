@@ -15,33 +15,43 @@
 </head>
 <style>
 *{padding: 0;margin: 0}
-img{width: 20%;max-height: 20%;margin:10px}
+img{width: 20%;max-height: 20%;margin:10px;}
 </style>
 <body>
 <div id="body"></div>
 <input type="text" id="user" />
 <input type="text" id="pwd">
 <button id="click">click</button>
+<p><a href="">粤ICP备17141482号</a></p>
 </body>
 </html>
 <script>
     var button = document.getElementById('click')
     var body = document.getElementById('body')
+
+    function httpFun(res){
+        var html = ''
+        if(typeof res.data === 'object' && res.data.img.length > 0){
+            res.data.img.map(function(view,i){
+                html += `<a href="${view}" data-lightbox="example-set"><img src=${view} /></a>`
+            })
+            body.innerHTML = html
+        }
+    }
+
     button.onclick = function(){
         var user = document.getElementById('user')
         var pwd = document.getElementById('pwd')
-        axios.get('http://47.92.101.29/root',{params:{user:user.value,pwd:pwd.value}}).then(function(res){
-            console.log(111)
-            var list = JSON.parse(res.data.list)
-            var html = ''
-            if(list.img.length > 0){
-                list.img.map(function(view,i){
-                    html += `<a href="${res.data.ip}${view}" data-lightbox="example-set"><img src=${res.data.ip}${view} /></a>`
-                })
-                body.innerHTML = html
-            }
+        axios.get('/user',{params:{user:user.value,pwd:pwd.value}}).then(function(res){
+            httpFun(res)
         }).catch(function(error){
-            alert(error)
+            alert(error.data)
+        })
+    }
+
+    window.onload = function(){
+        axios.get('/check').then(function(res){
+            httpFun(res)
         })
     }
 </script>
