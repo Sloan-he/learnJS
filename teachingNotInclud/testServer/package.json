@@ -1,0 +1,14 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "Sloan blog",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hesy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}

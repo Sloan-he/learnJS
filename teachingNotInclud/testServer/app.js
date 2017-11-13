@@ -11,7 +11,7 @@ app.use(session({
     secret: 'recommand 128 bytes random string',
     cookie: { maxAge: 3600 * 1000}
 }))
-
+console.log(process.env.NODE_ENV)
 app.get('/user',function(req,res){
     if(req.query.user === '牛河' && req.query.pwd === 'niuhe'){
         req.session.root = true
