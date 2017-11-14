@@ -1,7 +1,7 @@
 {
-  "name": "test",
+  "name": "photo",
   "version": "1.0.0",
-  "description": "Sloan blog",
+  "description": "Sloan photo",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,7 @@
   "author": "hesy",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "express-session": "^1.15.6"
   }
 }
