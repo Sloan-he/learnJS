@@ -1,7 +1,7 @@
 {
-  "name": "myblog",
+  "name": "sloan Blog",
   "version": "1.0.0",
-  "description": "Sloan blog",
+  "description": "sloan个人技术blog",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
