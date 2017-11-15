@@ -5,7 +5,7 @@ module.exports = {
   port:80,
   session:{
     secret:'blog',
-    key:'myblog',
+    key:'sessionId',
     maxAge:3600*1000
   },
   mongodb: 'mongodb://localhost:27017/myblog'

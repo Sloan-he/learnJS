@@ -1,1 +1,13 @@
 <div class="">头部</div>
+<% if(user){%>
+<div class=""><span><%= user.name %></span><a class="item" href="/signout">登出</a></div>
+<% } %>
+<% if(!user){%>
+<div class="">
+  <a class="item" href="/signin">登录</a>
+  <a class="item" href="/signup">注册</a>
+</div>
+<% } %>
+
+
+<%- include('notification') %>

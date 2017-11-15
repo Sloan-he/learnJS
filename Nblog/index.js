@@ -28,15 +28,20 @@ app.use(session({
   saveUninitialized:false,  //设置为false,强制创建一个session,即使用户未登录
   cookie:{
     maxAge: config.session.maxAge// 过期时间，过期后 cookie 中的 session id 自动删除
-  }/*,
+  },
   store:new MongoStore({ // 将 session 存储到 mongodb
-    url:config.mongdb // mongodb 地址
-  })*/
+    url:config.mongodb // mongodb 地址
+  })
 }))
 
 // flash 中间件，用来显示通知
 app.use(flash())
-// 路由
+
+//处理表单及文件上传
+app.use(require('express-formidable')({
+  uploadDir:path.join(__dirname,'public/img'), // 上传文件目录
+  keepExtensions: true// 保留后缀
+}))
 
 //设置模板全局常量
 app.locals.blog = {
@@ -52,6 +57,7 @@ app.use(function(req,res,next){
   next()
 })
 
+//路由
 routes(app)
 
 app.listen(config.port,function(){
