@@ -16,9 +16,17 @@
 <style>
 *{padding: 0;margin: 0}
 img{width: 20%;max-height: 20%;margin:10px;}
+.more{
+    border: 1px solid #ddd;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
 </style>
 <body>
-<div id="body"></div>
+<div id="body">
+    <div class="more">more</div>
+</div>
 <input type="text" id="user" />
 <input type="text" id="pwd">
 <button id="click">click</button>
@@ -27,22 +35,25 @@ img{width: 20%;max-height: 20%;margin:10px;}
 </html>
 <script>
     var button = document.getElementById('click')
-    var body = document.getElementById('body')
-
+    var pageNo = 1
     function httpFun(res){
         var html = ''
-        if(typeof res.data === 'object' && res.data.img.length > 0){
-            res.data.img.map(function(view,i){
+        if(typeof res.data === 'object' && res.data.length > 0){
+            res.data.map(function(view,i){
                 html += `<a href="${view}" data-lightbox="example-set"><img src=${view} /></a>`
             })
-            body.innerHTML = html
+            pageNo++
+            $('.more').before(html)
         }
     }
 
-    button.onclick = function(){
+    button.onclick = getList
+    $('.more').click(getList)
+
+    function getList(){
         var user = document.getElementById('user')
         var pwd = document.getElementById('pwd')
-        axios.get('/user',{params:{user:user.value,pwd:pwd.value}}).then(function(res){
+        axios.get('/user',{params:{user:user.value,pwd:pwd.value,pageNo:pageNo}}).then(function(res){
             httpFun(res)
         }).catch(function(error){
             alert(error.data)
