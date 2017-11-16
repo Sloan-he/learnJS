@@ -25,7 +25,7 @@ app.use(session({
   name:config.session.key, //设置cookie中保存session id 的字段名称
   secret:config.session.secret, //secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改
   resave: true, // 强制更新 session
-  saveUninitialized:false,  //设置为false,强制创建一个session,即使用户未登录
+  saveUninitialized:true,  //设置为false,强制创建一个session,即使用户未登录
   cookie:{
     maxAge: config.session.maxAge// 过期时间，过期后 cookie 中的 session id 自动删除
   },

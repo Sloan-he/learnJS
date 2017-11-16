@@ -1,13 +1,23 @@
-<div class="">头部</div>
-<% if(user){%>
-<div class=""><span><%= user.name %></span><a class="item" href="/signout">登出</a></div>
-<% } %>
-<% if(!user){%>
-<div class="">
-  <a class="item" href="/signin">登录</a>
-  <a class="item" href="/signup">注册</a>
+<div class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Blog</a></li>
+        <li><a href="/posts/create">发布文章</a></li>
+      </ul>
+      <div class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav">
+          <% if(user){%>
+            <li><img class="user-avatar" src=<%= '/asset/img/'+user.avatar%> alt=""></li>
+            <li><a class="text-muted" href="javascript:;"><%= user.name %></a></li>
+            <li><a class="item" href="/signout">登出</a></li>
+          <% }else{ %>
+            <li class=""><a class="item" href="/signin">登录</a></li>
+            <li><a class="item" href="/signup">注册</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
-<% } %>
-
-
 <%- include('notification') %>
