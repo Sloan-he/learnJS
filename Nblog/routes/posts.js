@@ -10,8 +10,14 @@ const checkLogin = require('../middlewares/check').checkLogin
 //GET /posts 所有用户或者特定用户的文章页
 // eg:GET /posts?author=xxx
 router.get('/',function(req,res,next){
-  console.log(req.session)
-  res.render('posts')
+  const author = req.query.author
+  PostModel.getPosts(author)
+    .then(function (posts) {
+      res.render('posts', {
+        posts: posts
+      })
+    })
+    .catch(next)
 })
 
 // POST /posts/create 发表一篇文章
@@ -39,19 +45,36 @@ router.post('/create', checkLogin, function (req, res, next) {
   }
   PostModel.create(post).then(result =>{
     post = result.ops[0]
-    req.flash('success','发表文章')
+    req.flash('success','发表成功')
     res.redirect(`/posts/${post._id}`)
   }).catch(next)
 })
 
 // GET /posts/create 发表文章页
 router.get('/create', checkLogin, function (req, res, next) {
-  res.render('create')
+  res.render('create',{
+    blog:{
+      title:'发表内容-sloan-Blog'
+    }
+  })
 })
 
 // GET /posts/:postId 单独一篇的文章页
 router.get('/:postId', function (req, res, next) {
-  res.send('文章详情页')
+  const postId = req.params.postId
+  Promise.all([
+    PostModel.getPostById(postId), // 获取文章信息
+    PostModel.incPv(postId)// pv 加 1
+  ]).then(result =>{
+    const post = result[0]
+    if(!post){
+      req.flash('error','该文章不存在或者被管理员删除')
+      res.redirect('/posts')
+    }
+    res.render('post', {
+      post: post
+    })
+  }).catch(next)
 })
 
 // GET /posts/:postId/edit 更新文章页

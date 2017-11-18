@@ -26,7 +26,7 @@ module.exports = {
     return Post.create(post).exec()
   },
   //通过文章id获取一篇文章
-  getpPostById:function getPostById(postId){
+  getPostById:function getPostById(postId){
     return Post
       .findOne({_id:postId})
       .populate({ path: 'author', model: 'User' })
