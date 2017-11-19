@@ -79,17 +79,69 @@ router.get('/:postId', function (req, res, next) {
 
 // GET /posts/:postId/edit 更新文章页
 router.get('/:postId/edit', checkLogin, function (req, res, next) {
-  res.send('更新文章页')
+  const postId = req.params.postId
+  const author = req.session.user._id
+  PostModel.getRawPostById(postId).then(post =>{
+    if(!post){
+      req.flash('error','该文章不存在或者被管理员删除')
+      res.redirect('/posts')
+    }
+    if(author.toString() !== post.author._id.toString()){
+      req.flash('error','权限不足！')
+      res.redirect('/posts')
+    }
+    res.render('edit',{
+      post: post
+    })
+  }).catch(next)
 })
 
 // POST /posts/:postId/edit 更新一篇文章
 router.post('/:postId/edit', checkLogin, function (req, res, next) {
-  res.send('更新文章')
+  console.log('req session',req.session)
+  const postId = req.params.postId
+  const author = req.session.user._id
+  const title = req.fields.title
+  const content = req.fields.content
+  PostModel.getRawPostById(postId).then(post =>{
+    if (!post) {
+      req.flash('error','该文章不存在或者被管理员删除')
+      res.redirect('/posts')
+    }
+    if(author.toString() !== post.author._id.toString()){
+      req.flash('error','权限不足！')
+      res.redirect('/posts')
+    }
+    PostModel.updatePostById(postId, { title: title, content: content }).then(() =>{
+      req.flash('success', '编辑文章成功')
+      // 编辑成功后跳转到上一页
+      res.redirect(`/posts/${postId}`)
+    }).catch(next)
+  }).catch(next)
 })
 
 // GET /posts/:postId/remove 删除一篇文章
 router.get('/:postId/remove', checkLogin, function (req, res, next) {
-  res.send('删除文章')
+  const postId = req.params.postId
+  const author = req.session.user._id
+  PostModel.getRawPostById(postId)
+    .then(function (post) {
+      if (!post) {
+        req.flash('error','该文章不存在或者被管理员删除')
+        res.redirect('/posts')
+      }
+      if (post.author._id.toString() !== author.toString()) {
+        req.flash('error','权限不足！')
+        res.redirect('/posts')
+      }
+      PostModel.delPostById(postId)
+        .then(function () {
+          req.flash('success', '删除文章成功')
+          // 删除成功后跳转到主页
+          res.redirect('/posts')
+        })
+        .catch(next)
+    }).catch(next)
 })
 
 // POST /posts/:postId/comment 创建一条留言
