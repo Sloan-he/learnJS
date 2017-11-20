@@ -26,6 +26,13 @@ exports.Post = mongolass.model('Post',{
 })
 exports.Post.index({ author: 1, _id: -1 }).exec()// 按创建时间降序查看用户的文章列表
 
+exports.Comment = mongolass.model('Comment',{
+  author: { type: Mongolass.Types.ObjectId },
+  content: { type: 'string' },
+  postId: { type: Mongolass.Types.ObjectId }
+})
+exports.Comment.index({ postId: 1, _id: 1 }).exec()// 通过文章 id 获取该文章下所有留言，按留言创建时间升序
+
 
 // 根据 id 生成创建时间 created_at
 mongolass.plugin('addCreatedAt', {

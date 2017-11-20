@@ -5,6 +5,7 @@
 const express = require('express')
 const router = express.Router()
 const PostModel = require('../models/posts')
+const CommentModel = require('../models/comments')
 const checkLogin = require('../middlewares/check').checkLogin
 
 //GET /posts 所有用户或者特定用户的文章页
@@ -64,15 +65,18 @@ router.get('/:postId', function (req, res, next) {
   const postId = req.params.postId
   Promise.all([
     PostModel.getPostById(postId), // 获取文章信息
+    CommentModel.getComments(postId), // 获取该文章所有留言
     PostModel.incPv(postId)// pv 加 1
   ]).then(result =>{
     const post = result[0]
+    const comments = result[1]
     if(!post){
       req.flash('error','该文章不存在或者被管理员删除')
       res.redirect('/posts')
     }
     res.render('post', {
-      post: post
+      post: post,
+      comments:comments
     })
   }).catch(next)
 })
@@ -146,12 +150,52 @@ router.get('/:postId/remove', checkLogin, function (req, res, next) {
 
 // POST /posts/:postId/comment 创建一条留言
 router.post('/:postId/comment', checkLogin, function (req, res, next) {
-  res.send('创建留言')
+  const author = req.session.user._id
+  const postId = req.params.postId
+  const content = req.fields.content
+  try{
+    if(!content.length){
+      throw new Error('请填写留言内容')
+    }
+  }catch (e){
+    req.flash('error',e.message)
+    return res.redirect('back')
+  }
+  const comment = {
+    author: author,
+    postId: postId,
+    content: content
+  }
+  CommentModel.create(comment)
+    .then(function () {
+      req.flash('success', '留言成功')
+      // 留言成功后跳转到上一页
+      res.redirect('back')
+    })
+    .catch(next)
 })
 
 // GET /posts/:postId/comment/:commentId/remove 删除一条留言
 router.get('/:postId/comment/:commentId/remove', checkLogin, function (req, res, next) {
-  res.send('删除留言')
+  const commentId = req.params.commentId
+  const author = req.session.user._id
+  CommentModel.getCommentById(commentId).then(comment =>{
+    if (!comment) {
+      req.flash('error','留言不存在')
+      return res.redirect('back')
+    }
+    if (comment.author.toString() !== author.toString()) {
+      req.flash('error','没有权限删除留言')
+      return res.redirect('back')
+    }
+    CommentModel.delCommentById(commentId)
+      .then(function () {
+        req.flash('success', '删除留言成功')
+        // 删除成功后跳转到上一页
+        res.redirect('back')
+      })
+      .catch(next)
+  })
 })
 
 module.exports = router

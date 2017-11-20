@@ -33,11 +33,44 @@
           </div>
           <%}%>
         </div>
+        <!--文章结束-->
+        <% comments.forEach(function (comment) { %>
+        <div class="media">
+          <div class="media-left media-top">
+            <a href="/posts?author=<%= comment.author._id %>">
+              <img class="media-object" src="/asset/img/<%= comment.author.avatar %>" alt="...">
+            </a>
+            <p class="text-center">
+              <small title="<%= ({m: '男', f: '女', x: '保密'})[comment.author.gender] %> | <%= comment.author.bio %>"><%= comment.author.name %></small>
+            </p>
+          </div>
+          <div class="media-body">
+            <p class="tag"><%= comment.created_at %></p>
+            <%- comment.content %>
+            <div class="clearfix">
+              <% if(user && comment.author._id && user._id.toString() === comment.author._id.toString()){%>
+              <div class="btn-group" role="group" aria-label="...">
+                <a href="/posts/<%= post._id %>/comment/<%= comment._id %>/remove" class="btn btn-danger btn-xs">删除</a>
+              </div>
+              <%}%>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+        <!--浏览结束-->
       </div>
     </div>
+    <% if(user && (user._id.toString() !== post.author._id.toString())){ %>
+      <form action="/posts/<%= post._id %>/comment" method="post">
+        <div class="form-group">
+          <label for="exampleInputEmail1">内容</label>
+          <textarea class="form-control" name="content" id="exampleInputEmail1" placeholder="留言"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">确定</button>
+      </form>
+    <% } %>
   </div>
 </div>
 <%- include('components/footer') %>
 </body>
 </html>
-
