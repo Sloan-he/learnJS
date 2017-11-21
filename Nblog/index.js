@@ -54,11 +54,22 @@ app.use(function(req,res,next){
   res.locals.user = req.session.user
   res.locals.success = req.flash('success').toString()
   res.locals.error = req.flash('error').toString()
+  req.count = 1
   next()
 })
 
 //路由
 routes(app)
+
+
+
+app.use(function(err,req, res, next){
+  console.error('23123213',err)
+  if(err){
+    req.flash('error', err.message)
+    res.redirect('/signin');
+  }
+})
 
 app.listen(config.port,function(){
   console.log(`${pkg.name} listening on port${config.port}`)

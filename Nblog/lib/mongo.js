@@ -37,14 +37,12 @@ exports.Comment.index({ postId: 1, _id: 1 }).exec()// 通过文章 id 获取该�
 // 根据 id 生成创建时间 created_at
 mongolass.plugin('addCreatedAt', {
   afterFind: function (results) {
-    console.log('afterFind')
     results.forEach(function (item) {
       item.created_at = moment(objectIdToTimestamp(item._id)).format('YYYY-MM-DD HH:mm')
     })
     return results
   },
   afterFindOne: function (result) {
-    console.log('afterFindOne',result)
     if (result) {
       result.created_at = moment(objectIdToTimestamp(result._id)).format('YYYY-MM-DD HH:mm')
     }

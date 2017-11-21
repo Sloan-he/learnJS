@@ -14,7 +14,7 @@ router.get('/',function(req,res,next){
   const author = req.query.author
   PostModel.getPosts(author)
     .then(function (posts) {
-      res.render('posts', {
+      return res.render('posts', {
         posts: posts
       })
     })
@@ -70,9 +70,9 @@ router.get('/:postId', function (req, res, next) {
   ]).then(result =>{
     const post = result[0]
     const comments = result[1]
+    console.log(1,res.headersSent)
     if(!post){
-      req.flash('error','该文章不存在或者被管理员删除')
-      res.redirect('/posts')
+      throw new Error('文章不存在！请稍后再试')
     }
     res.render('post', {
       post: post,
