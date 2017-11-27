@@ -72,7 +72,7 @@ router.get('/:postId', function (req, res, next) {
     const comments = result[1]
     console.log(1,res.headersSent)
     if(!post){
-      throw new Error('文章不存在！请稍后再试')
+      throw new Error('文章不存在！')
     }
     res.render('post', {
       post: post,

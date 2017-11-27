@@ -9,6 +9,7 @@ const flash = require('connect-flash')
 const config = require('config-lite')(__dirname)
 const routes = require('./routes')
 const pkg = require('./package')
+var fs = require('fs')
 
 
 const app = express()
@@ -58,16 +59,43 @@ app.use(function(req,res,next){
   next()
 })
 
+app.get('/download',function(req,res,next){
+  if(req.query.filepath.indexOf('/asset') === 0){
+    let filepath = req.query.filepath.slice(6)
+    let dirpath = path.join(__dirname,'public',filepath)
+    fs.stat(dirpath,(err,file) =>{
+      if(err){
+        next({message:'文件不存在!'})
+        return
+      }
+      if(file.isFile()){
+        res.download(dirpath,req.query.fileName,function(err){
+          if(err){
+            throw new Error(err)
+          }else{
+            console.log('success')
+          }
+        })
+      }else{
+        throw new Error('路径错误!')
+      }
+    })
+  }else{
+    throw new Error('路径错误!')
+  }
+
+})
+
 //路由
 routes(app)
 
 
 
+
 app.use(function(err,req, res, next){
-  console.error('23123213',err)
   if(err){
     req.flash('error', err.message)
-    res.redirect('/signin');
+    res.redirect('/posts');
   }
 })
 
