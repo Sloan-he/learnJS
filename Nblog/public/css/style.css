@@ -5,3 +5,10 @@
   display: block;
   margin-top: 8px;
 }
+.posts-box{
+  margin-bottom: 12px;
+}
+.posts-box img{
+  width: 64px;
+  height: 64px;
+}

@@ -9,6 +9,9 @@ const flash = require('connect-flash')
 const config = require('config-lite')(__dirname)
 const routes = require('./routes')
 const pkg = require('./package')
+const winston = require('winston')
+const expressWinston = require('express-winston')
+var fs = require('fs')
 
 
 const app = express()
@@ -54,11 +57,75 @@ app.use(function(req,res,next){
   res.locals.user = req.session.user
   res.locals.success = req.flash('success').toString()
   res.locals.error = req.flash('error').toString()
+  req.count = 1
   next()
 })
 
+app.get('/download',function(req,res,next){
+  if(req.query.filepath.indexOf('/asset') === 0){
+    let filepath = req.query.filepath.slice(6)
+    let dirpath = path.join(__dirname,'public',filepath)
+    fs.stat(dirpath,(err,file) =>{
+      if(err){
+        next({message:'文件不存在!'})
+        return
+      }
+      if(file.isFile()){
+        res.download(dirpath,req.query.fileName,function(err){
+          if(err){
+            throw new Error(err)
+          }else{
+            console.log('success')
+          }
+        })
+      }else{
+        throw new Error('路径错误!')
+      }
+    })
+  }else{
+    throw new Error('路径错误!')
+  }
+
+})
+
+// 正常请求的日志
+app.use(expressWinston.logger({
+  transports: [
+    new (winston.transports.Console)({
+      json: true,
+      colorize: true
+    }),
+    new winston.transports.File({
+      filename: 'logs/success.log'
+    })
+  ]
+}))
+
 //路由
 routes(app)
+
+// 错误请求的日志
+app.use(expressWinston.errorLogger({
+  transports: [
+    new winston.transports.Console({
+      json: true,
+      colorize: true
+    }),
+    new winston.transports.File({
+      filename: 'logs/error.log'
+    })
+  ]
+}))
+
+
+
+
+app.use(function(err,req, res, next){
+  if(err){
+    req.flash('error', err.message)
+    res.redirect('/posts');
+  }
+})
 
 app.listen(config.port,function(){
   console.log(`${pkg.name} listening on port${config.port}`)

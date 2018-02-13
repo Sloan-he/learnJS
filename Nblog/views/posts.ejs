@@ -8,7 +8,37 @@
 </head>
 <body>
 <%- include('components/header') %>
-辣么美的主页
+<div class="container">
+  <div class="posts-box">
+    <% posts.forEach(function(post){ %>
+    <div class="media">
+      <div class="media-left media-top">
+        <a href="/posts?author=<%= post.author._id %>">
+          <img class="media-object" src="/asset/img/<%= post.author.avatar %>" alt="...">
+        </a>
+        <p class="text-center">
+          <small title="<%= ({m: '男', f: '女', x: '保密'})[post.author.gender] %> | <%= post.author.bio %>"><%= post.author.name %></small>
+        </p>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading"><a href="/posts/<%= post._id %>"><%= post.title %></a></h4>
+        <p class="tag"><%= post.created_at %></p>
+        <%- post.content %>
+        <div class="clearfix">
+          <span class="label label-info">浏览(<%= post.pv || 0 %>)</span>
+          <span class="label label-info">留言(<%= post.commentsCount || 0 %>)</span>
+          <% if(user && post.author._id && user._id.toString() === post.author._id.toString()){%>
+          <div class="btn-group" role="group" aria-label="...">
+            <a href="/posts/<%= post._id %>/edit" class="btn btn-primary btn-xs">编辑</a>
+            <a href="/posts/<%= post._id %>/remove" class="btn btn-danger btn-xs">删除</a>
+          </div>
+          <%}%>
+        </div>
+      </div>
+    </div>
+    <%})%>
+  </div>
+</div>
 <%- include('components/footer') %>
 </body>
 </html>
