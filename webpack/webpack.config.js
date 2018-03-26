@@ -6,6 +6,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 //清理/dist文件夹
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+//压缩文件
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
 
 module.exports = {
     entry:{
@@ -18,40 +21,41 @@ module.exports = {
         hot:true,
         host: 'localhost'
     },
+    module:{
+        rules:[
+            {
+                test:/\.css$/,
+                use:[
+                    'style-loader',
+                    'css-loader'
+                ]
+            }
+            //{
+            //    test:/\.(png|svg|jpg|gif)$/,
+            //    use:[
+            //        'file-loader'
+            //    ]
+            //},
+            //{
+            //    test:/\.(woff|woff2|eot|ttf|otf)$/,
+            //    use:[
+            //        'file-loader'
+            //    ]
+            //}
+        ]
+    },
     plugins:[
         new CleanWebpackPlugin(['dist']),
+        new UglifyJSPlugin(),
         new HtmlWebpackPlugin({
             title:'Hot Module Management'
-        }),
-        new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+        })
+        //new webpack.NamedModulesPlugin(),
+        //new webpack.HotModuleReplacementPlugin()
     ],
     output: {
         filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/'
     }
-    //module:{
-    //    rules:[
-    //        {
-    //            test:/\.css$/,
-    //            use:[
-    //                'style-loader',
-    //                'css-loader'
-    //            ]
-    //        },
-    //        {
-    //            test:/\.(png|svg|jpg|gif)$/,
-    //            use:[
-    //                'file-loader'
-    //            ]
-    //        },
-    //        {
-    //            test:/\.(woff|woff2|eot|ttf|otf)$/,
-    //            use:[
-    //                'file-loader'
-    //            ]
-    //        }
-    //    ]
-    //}
 };
