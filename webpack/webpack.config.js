@@ -10,26 +10,28 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 
+
 module.exports = {
     entry:{
         app:'./src/index.js'
+        //another:'./src/another-module.js'
     },
     devtool: 'inline-source-map',
     //开发服务器
-    devServer:{
-        contentBase: './dist',
-        hot:true,
-        host: 'localhost'
-    },
+    //devServer:{
+    //    contentBase: './dist',
+    //    hot:true,
+    //    host: 'localhost'
+    //},
     module:{
         rules:[
-            {
-                test:/\.css$/,
-                use:[
-                    'style-loader',
-                    'css-loader'
-                ]
-            }
+            //{
+            //    test:/\.css$/,
+            //    use:[
+            //        'style-loader',
+            //        'css-loader'
+            //    ]
+            //}
             //{
             //    test:/\.(png|svg|jpg|gif)$/,
             //    use:[
@@ -46,15 +48,19 @@ module.exports = {
     },
     plugins:[
         new CleanWebpackPlugin(['dist']),
-        new UglifyJSPlugin(),
+        //new UglifyJSPlugin(),
         new HtmlWebpackPlugin({
-            title:'Hot Module Management'
+            title:'Code Splitting'
         })
+        //new webpack.optimize.CommonsChunkPlugin({
+        //    name:'common'
+        //})
         //new webpack.NamedModulesPlugin(),
         //new webpack.HotModuleReplacementPlugin()
     ],
     output: {
         filename: '[name].bundle.js',
+        chunkFilename:'[name].bundle.js',
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/'
     }
