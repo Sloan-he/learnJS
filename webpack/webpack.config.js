@@ -26,6 +26,16 @@ module.exports = {
     module:{
         rules:[
             //{
+            //    test:/\.js$/,
+            //    exclude: /(node_modules)/,
+            //    use:{
+            //        loader:'babel-loader',
+            //        options:{
+            //            presets:['es2015','stage-3']
+            //        }
+            //    }
+            //}
+            //{
             //    test:/\.css$/,
             //    use:[
             //        'style-loader',
@@ -61,7 +71,6 @@ module.exports = {
     output: {
         filename: '[name].bundle.js',
         chunkFilename:'[name].bundle.js',
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: '/'
+        path: path.resolve(__dirname, 'dist')
     }
 };

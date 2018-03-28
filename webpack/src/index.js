@@ -45,6 +45,6 @@ function getComponent() {
     }).catch(error => 'An error occurred while loading the component');
 }
 
-getComponent().then(component => {
+getComponent().then(function(component){
     document.body.appendChild(component);
-}
+})
