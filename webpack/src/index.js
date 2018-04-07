@@ -1,23 +1,22 @@
-import _ from 'lodash';
-import printMe from './print.js';
+//import _ from 'lodash';
+//import printMe from './print.js';
 //import { cube } from './math.js';
 //import './style.css';
 //import Icon from './timg.jpg';
-
+import {file,parse} from './globals';
 if(process.env.NODE_ENV !== 'production'){
     console.log('Looks like we are in development mode!');
 }
-
-
-
 function component() {
-    var element = document.createElement('pre');
+    var element = document.createElement('div');
+    that.alert('Hmmm, this probably isn\'t a great idea...')
     //element.innerHTML = [
     //         'Hello webpack!',
     //         '5 cubed is equal to ' + cube(5)
     //       ].join('\n\n');
-    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-    element.onclick = printMe
+    //element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+    element.innerHTML = join(['Hello', 'webpack'], ' ');
+    parse()
     return element;
 }
 //

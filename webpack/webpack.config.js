@@ -13,10 +13,10 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry:{
-        app:'./src/index.js',
-        vendor:[
-            'lodash'
-        ]
+        app:'./src/index.js'
+        //vendor:[
+        //    'lodash'
+        //]
         //another:'./src/another-module.js'
     },
     devtool: 'inline-source-map',
@@ -28,6 +28,14 @@ module.exports = {
     //},
     module:{
         rules:[
+            {
+                test: require.resolve('./src/index.js'),
+                use: 'imports-loader?that=>window'
+            },
+            {
+                test:require.resolve('./src/globals.js'),
+                use:'exports-loader?file,parse=helpers.parse'
+            }
             //{
             //    test:/\.js$/,
             //    exclude: /(node_modules)/,
@@ -63,15 +71,19 @@ module.exports = {
         new CleanWebpackPlugin(['dist']),
         //new UglifyJSPlugin(),
         new HtmlWebpackPlugin({
-            title:'Caching'
+            title:'shimming'
         }),
-        new webpack.HashedModuleIdsPlugin(),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'
-        }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'manifest'
+        new webpack.ProvidePlugin({
+            //_:'lodash'
+            join: ['lodash','join']
         })
+        //new webpack.HashedModuleIdsPlugin(),
+        //new webpack.optimize.CommonsChunkPlugin({
+        //    name: 'vendor'
+        //}),
+        //new webpack.optimize.CommonsChunkPlugin({
+        //    name: 'manifest'
+        //})
         //new webpack.optimize.CommonsChunkPlugin({
         //    name:'common'
         //})
@@ -79,7 +91,8 @@ module.exports = {
         //new webpack.HotModuleReplacementPlugin()
     ],
     output: {
-        filename: '[name].[chunkhash].js',
+        filename:'bundle.js',
+        //filename: '[name].[chunkhash].js',
         //chunkFilename:'[name].bundle.js',
         path: path.resolve(__dirname, 'dist')
     }
