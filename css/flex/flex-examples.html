@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--基本网格布局-->
+<div class="Grid basice">
+    <div class="Grid-cell">...</div>
+    <div class="Grid-cell">...</div>
+    <div class="Grid-cell">...</div>
+</div>
+<!--百分比-->
+<div class="Grid percentage">
+    <div class="Grid-cell u-1of4">...</div>
+    <div class="Grid-cell">...</div>
+    <div class="Grid-cell u-1of3">...</div>
+</div>
+</body>
+</html>
+<style>
+    .Grid-cell{
+        background:#ccc;
+    }
+    .Grid {
+        display: flex;
+        margin-bottom: 30px;
+    }
+    .basice .Grid-cell{
+        flex:1;
+    }
+    .percentage .Grid-cell{
+        flex: 1;
+    }
+    .percentage .Grid-cell.u-1of3 {
+        flex: 0 0 33.3333%;
+    }
+
+    .percentage .Grid-cell.u-1of4 {
+        flex: 0 0 25%;
+    }
+
+
+
+
+
+</style>

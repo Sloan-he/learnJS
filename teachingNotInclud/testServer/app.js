@@ -54,6 +54,16 @@ app.get('/check',function(req,res){
 })
 
 
+app.get('/list',function(req,res,next){
+    console.log('---------')
+	if(req.query.num){
+		res.send({data:req.query.num+10,retCode:'000000',msg:'add'})
+	}else{
+		res.send({data:0,retCode:'000000',msg:'add'})
+	}
+})
+
+
 
 
 
