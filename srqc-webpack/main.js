@@ -1,7 +1,12 @@
-// 通过 CommonJS 规范导入 show 函数
-const show = require('./show.js');
-// 通过 CommonJS 规范导入 CSS 模块
-require('./main.css');
+import * as React from 'react';
+import { Component } from 'react';
+import { render } from 'react-dom';
+require('./main.css')
 
-// 执行 show 函数
-show('Webpack');
+class Button extends Component {
+  render() {
+    return <h1>Hello,Webpack</h1>
+  }
+}
+
+render(<Button/>, window.document.getElementById('app'));
