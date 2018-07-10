@@ -36,7 +36,6 @@ uiDesigner.xml
 
 example/
 node_modules
-.babelrc
 # dependencies
 /node_modules
 

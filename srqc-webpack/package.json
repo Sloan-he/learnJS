@@ -23,7 +23,7 @@
     "babel-preset-react": "^6.24.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "web-webpack-plugin": "^1.10.6",
+    "web-webpack-plugin": "^1.10.0",
     "webpack-dev-server": "^2.6.1"
   }
 }
