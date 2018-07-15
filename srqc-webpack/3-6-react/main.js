@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
+import { Component } from "react"
+import { render } from "react-dom"
 
 class Button extends Component {
   render() {
@@ -7,4 +7,4 @@ class Button extends Component {
   }
 }
 
-render(<Button/>, window.document.getElementById('app'));
+render(<Button />, window.document.getElementById("app"))

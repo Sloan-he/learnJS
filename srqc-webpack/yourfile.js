@@ -5,5 +5,6 @@ var b = a.map(v =>{
 })
 
 var c = 1
+var d = 2
 
 console.log(b)
