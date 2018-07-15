@@ -4,6 +4,6 @@ var b = a.map(v =>{
   return v+1
 })
 
-var c = 1;
+var c = 1
 
 console.log(b)
