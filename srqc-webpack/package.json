@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
-    "buildServer": "webpack --config webpack.server.config.js"
+    "buildServer": "webpack --config webpack.server.config.js",
+    "precommit": "npm run lint",
+    "lint": "eslint"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +25,7 @@
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "husky": "^0.14.3",
     "ignore-loader": "^0.1.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
