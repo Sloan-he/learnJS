@@ -4,7 +4,4 @@ var b = a.map(v =>{
   return v+1
 })
 
-var c = 2;
-var d = 3;
-
-console.log(b);
+console.log(b)
