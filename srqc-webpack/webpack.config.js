@@ -2,13 +2,19 @@ const path = require('path');
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
+const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 
 module.exports = {
-    entry: './main.js',
+    entry: [
+        // 为了支持模块热替换，注入代理客户端
+        'webpack-hot-middleware/client',
+        './main.js'
+    ],
     output: {
         filename: 'bundle_browser.js',// 给输出的文件名称加上 hash 值
         path: path.resolve(__dirname, './dist')
     },
+    devtool: 'source-map',
     module: {
         rules: [
             {
@@ -30,12 +36,25 @@ module.exports = {
                         }
                     ] // 压缩 CSS 代码
                 })
+            },
+            {
+                test: /\.jpg$/,
+                use: [
+                    {
+                        loader:'url-loader',
+                        options:{
+                            limit:1024*30,
+                            fallback:'file-loader'
+                        }
+                    }
+                ]
             }
         ]
     },
     plugins: [
+        new HotModuleReplacementPlugin(),
         new ExtractTextPlugin({
-            filename: `[name]_[contenthash:8].css`// 给输出的 CSS 文件名称加上 hash 值
+            filename: `[name].css`// 给输出的 CSS 文件名称加上 hash 值
         }),
         new DefinePlugin({
             // 定义 NODE_ENV 环境变量为 production 去除 react 代码中的开发时才需要的部分
@@ -59,6 +78,6 @@ module.exports = {
                 // 提取出出现多次但是没有定义成变量去引用的静态值
                 reduce_vars: true
             }
-        }),
-    ],
+        })
+    ]
 };
