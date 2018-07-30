@@ -1,4 +1,4 @@
-const socktio = require('socket.io')
+const socketio = require('socket.io')
 
 
 //初始化聊天状态的变量
@@ -12,7 +12,7 @@ let currentRoom = {}
 
 exports.listen = function(server){
   //启动socket服务器，允许它搭载在已有的HTTP服务器上
-  io = socktio.listen(server)
+  io = socketio.listen(server)
   io.set('log level',1)
 
   //定义每个用户连接的处理逻辑
@@ -63,7 +63,7 @@ function joinRoom(socket,room){
   socket.emit('joinResult',{room})
   //通知房间里的其他用户知道有新用户进入了房间
   socket.broadcast.to(room).emit('message',{
-    text:`${nickName[socket.id]} has joined ${room}.`
+    text:`${nickNames[socket.id]} has joined ${room}.`
   })
   //确定有哪些用户在这个房间里
   let usersInRoom = io.sockets.clients(room)
