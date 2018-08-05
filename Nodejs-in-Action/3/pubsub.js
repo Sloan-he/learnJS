@@ -30,7 +30,6 @@ const server = net.createServer(function(client){
   channel.emit('join',id,client)
   client.on('data',function(data){
     data = data.toString()
-    console.log('data',data)
     if(data === 'shutdown\r\n'){
       channel.emit('shutdown')
     }
