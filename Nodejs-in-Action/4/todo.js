@@ -36,6 +36,20 @@ const server = http.createServer(function(req,res){
       items.splice(i,1)
       res.end('OK!')
     }
+  }else if(req.method === 'PUT'){
+    const path = url.parse(req.url).pathname
+    let i = parseInt(path.slice(1),10)
+
+    if(isNaN(i)){
+      res.statusCode = 400
+      res.end('Invalid item id')
+    }else if(!items[i]){
+      res.statusCode = 400
+      res.end('Item not found')
+    }else{
+      items[i] = req.query.item
+      res.end('OK!')
+    }
   }
 })
 
