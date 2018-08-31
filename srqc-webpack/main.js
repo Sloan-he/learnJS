@@ -1,12 +1,10 @@
-import * as React from 'react';
-import { Component } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
-require('./main.css')
+import { AppComponent } from './AppComponent';
 
-class Button extends Component {
-  render() {
-    return <h1>Hello,Webpack</h1>
-  }
+if (module.hot) {
+  module.hot.accept();
 }
 
-render(<Button/>, window.document.getElementById('app'));
+// 把根组件渲染到 DOM 树上
+render(<AppComponent/>, window.document.getElementById('app'));
