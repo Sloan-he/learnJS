@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
+<script>
+    function Person(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    Person.prototype.getName = function() {
+        return this.name;
+    }
+
+    var p1 = new Person('tim', 10);
+
+    //构造函数的继承
+    function cPerson(name,age,job){
+        Person.call(this,name,age)
+        this.job = job
+    }
+
+    // 继承原型
+    //cPerson.prototype = new Person('hesy', 26);
+    var c1 = new cPerson('hsy',29,'web')
+</script>
