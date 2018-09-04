@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    #target,#target2 {
+        width: 50px;
+        height: 50px;
+        background-color: orange;
+        cursor: move;
+    }
+</style>
+<body>
+<div id="target"></div>
+<div id="target2"></div>
+</body>
+</html>
+<script src="drag.js"></script>
+<script>
+    var target = new Drag('target');
+    var target2 = new Drag('target2');
+    console.log(target,target2)
+
+
+</script>
