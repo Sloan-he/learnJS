@@ -18,10 +18,24 @@
 </body>
 </html>
 <script src="drag.js"></script>
+<!--<script src="eventLoop.js"></script>-->
 <script>
     var target = new Drag('target');
     var target2 = new Drag('target2');
-    console.log(target,target2)
+    //console.log(target,target2)
+</script>
+<script>
+    var url = 'https://hq.tigerbrokers.com/fundamental/finance_calendar/getType/2017-02-26/2017-06-10';
+    var result;
 
+    var XHR = new XMLHttpRequest();
+    XHR.open('GET', url, true);
+    XHR.send();
 
+    XHR.onreadystatechange = function() {
+        if (XHR.readyState == 4 && XHR.status == 200) {
+            result = XHR.response;
+            console.log(result);
+        }
+    }
 </script>
